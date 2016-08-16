@@ -1,4 +1,12 @@
 {
-  extends: './node_modules/eslint-config-mbrio/node.js',
+  extends: 'mbrio',
   root: true,
+  rules: {
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      },
+    ],
+  },
 }
