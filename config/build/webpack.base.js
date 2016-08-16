@@ -5,6 +5,7 @@ if (!process.env.NODE_ENV) { process.env.NODE_ENV = 'development'; }
 
 module.exports = function createWebpackConfig() {
   return {
+    context: pathutil.join(__dirname, '..', '..'),
     target: 'web',
     debug: false,
     devtool: 'source-map',
@@ -14,8 +15,8 @@ module.exports = function createWebpackConfig() {
       ],
     },
     output: {
-      path: pathutil.join(__dirname, '..', '..', 'src/assets/js/'),
-      publicPath: '/',
+      path: './src/assets/js/',
+      publicPath: '/js/',
       filename: '[name].js',
     },
     plugins: [

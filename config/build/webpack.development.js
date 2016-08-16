@@ -15,4 +15,9 @@ config.plugins.push(new webpack.NoErrorsPlugin());
 
 config.module.loaders[0].loaders.unshift('react-hot');
 
+config.devServer = {
+  contentBase: './src/assets',
+  hot: true,
+};
+
 module.exports = config;

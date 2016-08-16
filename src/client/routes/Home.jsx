@@ -1,13 +1,11 @@
 import React from 'react';
-import autobind from 'autobind-decorator';
 
 export default class Home extends React.Component {
   state = {
     message: 'Hello, App!',
-  };
+  }
 
-  @autobind
-  handleClick(e) {
+  handleClick = (e) => {
     e.preventDefault();
 
     this.setState({ message: Math.random() });
