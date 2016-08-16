@@ -1,0 +1,4 @@
+{
+  extends: './node_modules/eslint-config-mbrio/node.js',
+  root: true,
+}

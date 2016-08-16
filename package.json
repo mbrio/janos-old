@@ -1,0 +1,32 @@
+{
+  "name": "janos",
+  "version": "1.0.0",
+  "description": "The Janos Gat Gallery website",
+  "engines": {
+    "node": ">=6.3"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive spec",
+    "lint": "eslint *.js **/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mbrio/janos.git"
+  },
+  "author": "Michael Diolosa <michael.diolosa@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mbrio/janos/issues"
+  },
+  "homepage": "https://github.com/mbrio/janos#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.3.1",
+    "eslint-config-mbrio": "^1.0.2",
+    "eslint-plugin-react": "^6.1.1",
+    "mocha": "^3.0.2",
+    "sinon": "^1.17.5",
+    "supertest": "^2.0.0"
+  }
+}
