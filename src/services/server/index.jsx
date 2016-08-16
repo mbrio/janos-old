@@ -1,5 +1,5 @@
 import Server from './Server';
-import routes from '../../shared/routes';
+import routes from '../../client/routes';
 
 export default function startServer() {
   const server = new Server({ routes });
