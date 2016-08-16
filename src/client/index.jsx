@@ -1,1 +1,1 @@
-// const App = require('./routes/App');
+// import App from './routes/App';

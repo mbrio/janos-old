@@ -1,6 +1,6 @@
-const React = require('react');
+import React from 'react';
 
-class App extends React.Component {
+export default class App extends React.Component {
   doAsync() {
     return Promise.resolve();
   }
@@ -9,5 +9,3 @@ class App extends React.Component {
     return <div>Hello, App!</div>;
   }
 }
-
-module.exports = App;

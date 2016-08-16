@@ -1,5 +1,5 @@
-const Server = require('../../src/services/server/Server');
-const { expect } = require('chai');
+import { expect } from 'chai';
+import Server from '../../src/services/server/Server';
 
 describe('Server', () => {
   it('should start', done => {
