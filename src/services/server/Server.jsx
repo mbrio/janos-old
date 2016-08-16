@@ -43,6 +43,7 @@ export default class Server {
               </head>
               <body>
                 <div id="react-view">${reactComponent}</div>
+                <script src="/app.js"></script>
               </body>
             </html>
           `;

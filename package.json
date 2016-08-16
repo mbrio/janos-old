@@ -7,9 +7,16 @@
   },
   "main": "./src/services/server/index.js",
   "scripts": {
-    "test": "mocha --recursive spec",
+    "pretest": "npm run webpack-test",
+    "test": "mocha --recursive spec/bootstrap.js spec",
     "ci": "mocha --watch --recursive spec",
     "lint": "eslint *.js **/*.js *.jsx **/*.jsx",
+    "webpack": "NODE_ENV=production webpack --config config/build/webpack.production.js",
+    "webpack-devel": "NODE_ENV=development webpack --config config/build/webpack.development.js",
+    "webpack-test": "NODE_ENV=test webpack --config config/build/webpack.development.js",
+    "start-webpack": "NODE_ENV=production webpack-dev-server -d --progress --host 0.0.0.0 --port 8080 --config config/build/webpack.production.js",
+    "start-webpack-devel": "NODE_ENV=development webpack-dev-server -d --hot --progress --host 0.0.0.0 --port 8080 --config config/build/webpack.development.js",
+    "start-webpack-test": "NODE_ENV=test webpack-dev-server -d --hot --progress --host 0.0.0.0 --port 8080 --config config/build/webpack.test.js",
     "start": "node index.js"
   },
   "repository": {
