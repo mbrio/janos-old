@@ -1,4 +1,4 @@
-require('babel-register')({ presets: ['es2015', 'stage-0'] });
-const startServer = require('./src/services/server').default;
+require('babel-register')();
+const { default: start } = require('./src/services/server');
 
-startServer();
+start();
