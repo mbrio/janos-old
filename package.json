@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive spec",
+    "ci": "mocha --watch --recursive spec",
     "lint": "eslint *.js **/*.js"
   },
   "repository": {
