@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=6.3"
   },
-  "main": "./src/services/server/index.js",
+  "main": "index.js",
   "scripts": {
     "pretest": "npm run webpack-test",
     "test": "mocha --recursive spec/bootstrap.js spec",

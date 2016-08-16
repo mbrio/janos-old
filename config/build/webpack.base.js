@@ -3,9 +3,6 @@ const webpack = require('webpack');
 
 if (!process.env.NODE_ENV) { process.env.NODE_ENV = 'development'; }
 
-// loaders: ['babel?plugins[]=transform-decorators-legacy,presets[]=react,
-// presets[]=es2015,presets[]=stage-0'] },
-
 module.exports = function createWebpackConfig() {
   return {
     target: 'web',
