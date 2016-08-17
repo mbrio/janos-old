@@ -41,11 +41,11 @@ export default class Server {
     // Setup static serving of files within the assets folder.
     this.app.use(express.static(pathutil.join(__dirname, '..', '..', 'assets')));
 
-    // Setup the API that servers our application code
-    createApi(this.app, '/api');
-
     // Setup access control headers
     this.app.use(accessControl);
+
+    // Setup the API that servers our application code
+    createApi(this.app, '/api');
 
     // Setup the global handler for handling isomporphic rendering of React components
     this.app.use(createReactRouter(routes));
