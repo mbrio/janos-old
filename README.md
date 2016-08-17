@@ -79,8 +79,9 @@ $ npm run docker-webpack # starts the webpack server in the docker production en
 * **/src/services** Used to store service applications
 * **/src/services/server** The web server of the application
 
-# React LInks
+# React Links
 
+* [Reusable Components](https://facebook.github.io/react/docs/reusable-components.html)
 * [HOC Pattern](https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775)
 * [Mixins Are Dead. Long Live Composition](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750#.uxaxlg62x)
 * [React Higher Order Components in depth](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e#.eng72rxa6)
