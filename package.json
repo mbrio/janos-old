@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "pretest": "NODE_ENV=test npm run webpack",
+    "pretest": "npm run lint && NODE_ENV=test npm run webpack",
     "test": "mocha --recursive spec/bootstrap.js spec",
     "preci": "NODE_ENV=test npm run webpack",
     "ci": "mocha --watch --recursive spec",
