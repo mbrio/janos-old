@@ -3,6 +3,7 @@ import express from 'express';
 import pathutil from 'path';
 import accessControl from './middleware/accessControl';
 import createReactRouter from './middleware/createReactRouter';
+import createApi from './api';
 
 // Default options for the Server class
 const defaultOptions = {
@@ -39,6 +40,9 @@ export default class Server {
 
     // Setup static serving of files within the assets folder.
     this.app.use(express.static(pathutil.join(__dirname, '..', '..', 'assets')));
+
+    // Setup the API that servers our application code
+    createApi(this.app, '/api');
 
     // Setup access control headers
     this.app.use(accessControl);
