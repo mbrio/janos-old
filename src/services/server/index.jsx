@@ -6,7 +6,7 @@ export default function startServer() {
 
   server.start().then(() => {
     /* eslint-disable no-console */
-    console.log('Server started.');
+    console.log(`Server started in ${process.env.NODE_ENV} mode on port ${server.options.port}.`);
     /* eslint-enable no-console */
   });
 }

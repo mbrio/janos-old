@@ -1,12 +1,13 @@
 import httputil from 'http';
 import express from 'express';
 import React from 'react';
+import pathutil from 'path';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 
 const defaultOptions = {
   throwUnhandledRejection: true,
-  port: process.env.PORT || 3001,
+  port: process.env.PORT || 8080,
 };
 
 export default class Server {
@@ -24,6 +25,8 @@ export default class Server {
         throw error;
       });
     }
+
+    this.app.use(express.static(pathutil.join(__dirname, '..', '..', 'assets')));
 
     this.app.use((req, res) => {
       match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
@@ -43,7 +46,7 @@ export default class Server {
               </head>
               <body>
                 <div id="react-view">${reactComponent}</div>
-                <script src="/app.js"></script>
+                <script src="/js/app.js"></script>
               </body>
             </html>
           `;

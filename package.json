@@ -7,17 +7,25 @@
   },
   "main": "index.js",
   "scripts": {
-    "pretest": "npm run webpack-test",
+    "pretest": "NODE_ENV=test npm run webpack",
     "test": "mocha --recursive spec/bootstrap.js spec",
+    "preci": "NODE_ENV=test npm run webpack",
     "ci": "mocha --watch --recursive spec",
     "lint": "eslint *.js **/*.js *.jsx **/*.jsx",
-    "webpack": "NODE_ENV=production webpack --config config/build/webpack.production.js",
-    "webpack-devel": "NODE_ENV=development webpack --config config/build/webpack.development.js",
-    "webpack-test": "NODE_ENV=test webpack --config config/build/webpack.development.js",
-    "start-webpack": "NODE_ENV=production webpack-dev-server -d --progress --host 0.0.0.0 --port 8080 --config config/build/webpack.production.js",
-    "start-webpack-devel": "NODE_ENV=development webpack-dev-server -d --hot --progress --host 0.0.0.0 --port 8080 --config config/build/webpack.development.js",
-    "start-webpack-test": "NODE_ENV=test webpack-dev-server -d --hot --progress --host 0.0.0.0 --port 8080 --config config/build/webpack.test.js",
-    "start": "node index.js"
+    "webpack": "webpack --config config/build/webpack.config.js",
+    "webpack-server": "webpack-dev-server --config config/build/webpack.config.js",
+
+    "prestart": "NODE_ENV=production npm run webpack",
+    "start": "NODE_ENV=production node index.js",
+    "start-webpack": "NODE_ENV=production npm run webpack-server",
+
+    "prestart-devel": "NODE_ENV=development npm run webpack",
+    "start-devel": "NODE_ENV=development node index.js",
+    "start-webpack-devel": "USE_HOT_SERVER=true NODE_ENV=development npm run webpack-server",
+
+    "prestart-test": "NODE_ENV=test npm run webpack",
+    "start-test": "NODE_ENV=test node index.js",
+    "start-webpack-test": "NODE_ENV=test npm run webpack-server"
   },
   "repository": {
     "type": "git",
