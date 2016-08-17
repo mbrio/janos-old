@@ -5,7 +5,7 @@ services:
   base:
     build:
       context: ../../
-      dockerfile: config/docker/Dockerfile
+      dockerfile: config/deploy/Dockerfile
 
   test:
     extends:

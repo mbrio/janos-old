@@ -62,3 +62,26 @@ $ npm run build # builds the docker image for the production environment
 $ npm run docker # starts the isomorphic server in the docker production environment
 $ npm run docker-webpack # starts the webpack server in the docker production environment
 ```
+
+# Project Structure
+
+* **/config** Used to store application configuration files
+* **/config/build** Used to store configuration files for building the application (*webpack*)
+* **/config/deploy** Used to store configuration files for deploying the application (*docker*)
+* **/spec** Tests
+* **/src** Used to store source files
+* **/src/assets** Used to store static assets such as images, videos, etc.
+* **/src/build** Used to store built static assets such as client JS files
+* **/src/client** Used to store the React application used as the client to the application
+* **/src/client/containers** Used to store React HOCs (higher order component) for composition
+* **/src/client/components** Used to store reusable React components
+* **/src/client/routes** Used to store React components that correspond to routes
+* **/src/services** Used to store service applications
+* **/src/services/server** The web server of the application
+
+# React LInks
+
+* [HOC Pattern](https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775)
+* [Mixins Are Dead. Long Live Composition](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750#.uxaxlg62x)
+* [React Higher Order Components in depth](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e#.eng72rxa6)
+* [The Cost of Small Modules](https://nolanlawson.com/2016/08/15/the-cost-of-small-modules/)
