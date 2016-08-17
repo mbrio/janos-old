@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class Home extends React.Component {
   state = {
-    message: 'Hello, App!',
+    message: 'Hello, App Buddy!',
   }
 
   handleClick = (e) => {

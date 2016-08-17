@@ -1,7 +1,7 @@
+if (!process.env.NODE_ENV) { process.env.NODE_ENV = 'development'; }
+
 const pathutil = require('path');
 const webpack = require('webpack');
-
-if (!process.env.NODE_ENV) { process.env.NODE_ENV = 'development'; }
 
 const environment = process.env.NODE_ENV;
 const useHotServer = process.env.USE_HOT_SERVER || false;
@@ -34,13 +34,13 @@ module.exports = {
   context: pathutil.join(__dirname, '..', '..'),
   target: 'web',
   debug: environment === 'test' || environment === 'development',
-  devtool: 'source-map',
+  devtool: environment === 'test' || environment === 'development' ? 'source-map' : undefined,
   entry: {
     app: appEntry,
   },
   output: {
-    path: './src/assets/js/',
-    publicPath: '/js/',
+    path: './src/assets/build/',
+    publicPath: '/build/',
     filename: '[name].js',
   },
   plugins,

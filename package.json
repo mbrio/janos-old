@@ -12,17 +12,17 @@
     "preci": "NODE_ENV=test npm run webpack",
     "ci": "mocha --watch --recursive spec",
     "lint": "eslint *.js **/*.js *.jsx **/*.jsx",
+    "clean": "rimraf src/assets/build",
+    "prewebpack": "npm run clean",
     "webpack": "webpack --config config/build/webpack.config.js",
+    "prewebpack-server": "npm run clean",
     "webpack-server": "webpack-dev-server --config config/build/webpack.config.js",
-
     "prestart": "NODE_ENV=production npm run webpack",
     "start": "NODE_ENV=production node index.js",
     "start-webpack": "NODE_ENV=production npm run webpack-server",
-
     "prestart-devel": "NODE_ENV=development npm run webpack",
     "start-devel": "NODE_ENV=development node index.js",
     "start-webpack-devel": "USE_HOT_SERVER=true NODE_ENV=development npm run webpack-server",
-
     "prestart-test": "NODE_ENV=test npm run webpack",
     "start-test": "NODE_ENV=test node index.js",
     "start-webpack-test": "NODE_ENV=test npm run webpack-server"
@@ -72,6 +72,7 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
     "redux": "^3.5.2",
+    "rimraf": "^2.5.4",
     "seamless-immutable": "^6.1.1"
   }
 }
