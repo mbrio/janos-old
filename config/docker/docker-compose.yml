@@ -1,0 +1,65 @@
+version: '2'
+
+services:
+
+  base:
+    build:
+      context: ../../
+      dockerfile: config/docker/Dockerfile
+
+  test:
+    extends:
+      service: base
+    environment:
+      NODE_ENV: "test"
+      NPM_CONFIG_PRODUCTION: "false"
+      PORT: "8080"
+      HOST: "0.0.0.0"
+    command: [npm, run, start-test]
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../..:/usr/src/app
+
+  ci:
+    extends:
+      service: test
+    command: [npm, run, ci]
+
+  test-docker:
+    extends:
+      service: test
+    command: [npm, run, start-webpack-test]
+
+  development:
+    extends:
+      service: base
+    environment:
+      NODE_ENV: "development"
+      NPM_CONFIG_PRODUCTION: "false"
+      PORT: "8080"
+      HOST: "0.0.0.0"
+    command: [npm, run, start-devel]
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../..:/usr/src/app
+
+  development-docker:
+    extends:
+      service: development
+    command: [npm, run, start-webpack-devel]
+
+  production:
+    extends:
+      service: base
+    environment:
+      PORT: "8080"
+      HOST: "0.0.0.0"
+    ports:
+      - "8080:8080"
+
+  production-docker:
+    extends:
+      service: production
+    command: [npm, run, start-webpack]

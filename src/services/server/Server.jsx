@@ -62,11 +62,17 @@ export default class Server {
   start() {
     return new Promise((resolve, reject) => {
       this.httpServer.listen(this.options.port, err => {
-        if (err) {
-          reject(err);
-        }
+        if (err) { return reject(err); }
+        return resolve();
+      });
+    });
+  }
 
-        resolve();
+  stop() {
+    return new Promise((resolve, reject) => {
+      this.httpServer.close(err => {
+        if (err) { return reject(err); }
+        return resolve();
       });
     });
   }
