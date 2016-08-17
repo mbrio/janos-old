@@ -93,6 +93,7 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
     "redux": "^3.5.2",
+    "redux-actions": "^0.10.1",
     "reselect": "^2.5.3",
     "rimraf": "^2.5.4",
     "seamless-immutable": "^6.1.1"
