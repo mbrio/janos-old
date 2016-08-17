@@ -1,4 +1,4 @@
-# Janos Gat Gellery
+# Janos Gat Gallery
 
 The Janos Gat Gallery isomorphic website built on React, Redux, and Node.
 
