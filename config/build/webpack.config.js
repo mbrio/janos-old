@@ -6,8 +6,13 @@ const webpack = require('webpack');
 const environment = process.env.NODE_ENV;
 const useHotServer = process.env.USE_HOT_SERVER || false;
 const port = process.env.PORT || 8080;
+const host = process.env.HOST || 'localhost';
 const plugins = [new webpack.EnvironmentPlugin(['NODE_ENV'])];
-const jsxLoader = { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ['babel'] };
+const jsxLoader = {
+  test: /\.(js|jsx)$/,
+  loaders: ['babel'],
+  include: pathutil.join(__dirname, '..', '..', 'src', 'client'),
+};
 const appEntry = ['./src/client'];
 
 // Special consideration for production environment
@@ -20,8 +25,8 @@ if (environment === 'development') {
   // The development environment may need to be run with the hot server
   if (useHotServer) {
     appEntry.unshift(
-      'webpack-dev-server/client?http://0.0.0.0:8080',
-      'webpack/hot/dev-server'
+      `webpack-dev-server/client?http://${host}:${port}`,
+      'webpack/hot/only-dev-server'
     );
     plugins.push(new webpack.HotModuleReplacementPlugin());
     jsxLoader.loaders.unshift('react-hot');
@@ -57,5 +62,6 @@ module.exports = {
     contentBase: './src/assets',
     hot: useHotServer,
     port,
+    host,
   },
 };

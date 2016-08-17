@@ -4,5 +4,4 @@ Thumbs.db
 lib-cov
 coverage
 node_modules
-src/assets/js/app.js
-src/assets/js/app.js.map
+src/assets/build
