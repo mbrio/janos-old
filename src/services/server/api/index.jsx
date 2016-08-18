@@ -1,5 +1,9 @@
-import createExhibitionsApi from './exhibitions';
+import createExhibitionsRouter from './exhibitions';
+import createArtistsRouter from './artists';
 
-export default function createApi(app, prefix = '/api') {
-  createExhibitionsApi(app, prefix);
+export default function createApiRouter(prefix = '/api') {
+  return [
+    createArtistsRouter(prefix),
+    createExhibitionsRouter(prefix),
+  ];
 }

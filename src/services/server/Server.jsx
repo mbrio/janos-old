@@ -3,7 +3,7 @@ import express from 'express';
 import pathutil from 'path';
 import accessControl from './middleware/accessControl';
 import createReactRouter from './middleware/createReactRouter';
-import createApi from './api';
+import createApiRouter from './api';
 
 // Default options for the Server class
 const defaultOptions = {
@@ -45,7 +45,7 @@ export default class Server {
     this.app.use(accessControl);
 
     // Setup the API that servers our application code
-    createApi(this.app, '/api');
+    this.app.use(createApiRouter('/api'));
 
     // Setup the global handler for handling isomporphic rendering of React components
     this.app.use(createReactRouter(routes));

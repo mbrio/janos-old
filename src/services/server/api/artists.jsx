@@ -3,10 +3,10 @@ import express from 'express';
 
 const dataAssetsPath = pathutil.join(__dirname, '..', '..', '..', 'assets', 'data');
 
-export default function createExhibitionsRouter(prefix) {
+export default function createArtistsApi(prefix) {
   const router = express.Router(); // eslint-disable-line new-cap
 
-  router.route(`${prefix}/exhibitions`)
+  router.route(`${prefix}/artists`)
     .get((req, res) => {
       const options = {
         root: dataAssetsPath,
@@ -17,7 +17,7 @@ export default function createExhibitionsRouter(prefix) {
         },
       };
 
-      res.sendFile('exhibitions.json', options, err => {
+      res.sendFile('artists.json', options, err => {
         if (err) {
           console.log(err); // eslint-disable-line no-console
           res.status(err.status).end();
