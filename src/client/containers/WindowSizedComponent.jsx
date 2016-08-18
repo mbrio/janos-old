@@ -1,6 +1,8 @@
 import React from 'react';
 import throttle from 'lodash.throttle';
 
+const hasWindow = typeof window !== 'undefined';
+
 /**
  * An HOC for providing window resize features to a composed component. It provides two react
  * props, windowWidth and windowHeight, that correspond to the current size of the window.
@@ -13,10 +15,11 @@ import throttle from 'lodash.throttle';
  * @return {class} - A new component class composed with window size features
  */
 export default (ComposedComponent) => class extends React.Component {
+
   // Initial state with window sizes
   state = {
-    windowWidth: window.innerWidth,
-    windowHeight: window.innerHeight,
+    windowWidth: hasWindow ? window.innerWidth : 0,
+    windowHeight: hasWindow ? window.innerHeight : 0,
   }
 
   constructor(props, context) {
@@ -35,11 +38,15 @@ export default (ComposedComponent) => class extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize);
+    if (hasWindow) {
+      window.addEventListener('resize', this.handleResize);
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
+    if (hasWindow) {
+      window.removeEventListener('resize', this.handleResize);
+    }
   }
 
   render() {

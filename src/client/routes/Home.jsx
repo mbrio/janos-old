@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import WindowSizedComponent from '../containers/WindowSizedComponent';
 
 /**
@@ -30,10 +31,13 @@ export default class Home extends React.Component {
   }
 
   render() {
-    return (<div>
-      <div>{this.state.message}</div>
-      <div>{this.props.windowWidth}x{this.props.windowHeight}</div>
-      <div><button onClick={this.handleClick}>Click Me</button></div>
-    </div>);
+    return (
+      <div>
+        <Helmet title="Home | Janos Gat Gallery" />
+        <div>{this.state.message}</div>
+        <div>{this.props.windowWidth}x{this.props.windowHeight}</div>
+        <div><button onClick={this.handleClick}>Click Me</button></div>
+      </div>
+    );
   }
 }

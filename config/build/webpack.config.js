@@ -44,9 +44,8 @@ module.exports = {
     app: appEntry,
   },
   output: {
-    path: './src/assets/build/',
-    publicPath: '/build/',
-    filename: '[name].js',
+    path: './src/assets/',
+    filename: 'build/js/[name].js',
   },
   plugins,
   resolve: {

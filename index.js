@@ -12,8 +12,11 @@ if (process.env.NODE_ENV === 'development' && !process.env.FORK_FORCE_START) {
 
   console.log('Begin watching file changes'); // eslint-disable-line no-console
 
-  chokidar.watch(pathutil.join(__dirname, 'src', 'services'), {
-    ignored: /[\/\\]\./,
+  chokidar.watch(pathutil.join(__dirname, 'src'), {
+    ignored: [
+      /[\/\\]\./,
+      /[\/\\]src[\/\\]client[\/\\]/,
+    ],
     ignoreInitial: true,
   })
     .on('all', (event, path) => {

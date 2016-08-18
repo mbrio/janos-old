@@ -1,6 +1,8 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
+import reactIndexTemplate from '../../../lib/reactIndexTemplate';
 
 /**
  * Creates the middleware that handles rendering of the isomporphic React application.
@@ -12,8 +14,8 @@ export default function createReactRouter(routes) {
   /**
    * Renders the isomporphic React application.
    *
-   * @param {object} req - The express request
-   * @param {object} res - The express response
+   * @param {Object} req - The express request
+   * @param {Object} res - The express response
    */
   return (req, res) => {
     match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
@@ -34,20 +36,15 @@ export default function createReactRouter(routes) {
       // Attempt to render the initial React component
       } else if (renderProps) {
         const reactComponent = renderToString(<RouterContext {...renderProps} />);
+        const head = Helmet.rewind();
 
-        const html = `
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <meta charset="utf-8">
-              <title></title>
-            </head>
-            <body>
-              <div id="react-view">${reactComponent}</div>
-              <script src="/build/app.js"></script>
-            </body>
-          </html>
-        `;
+        const html = reactIndexTemplate(
+          head.htmlAttributes.toString(),
+          head.title.toString(),
+          head.meta.toString(),
+          head.link.toString(),
+          reactComponent
+        );
 
         res.status(200).send(html);
 

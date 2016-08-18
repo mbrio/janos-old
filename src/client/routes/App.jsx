@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 
 /**
  * The root component as a stateless function component.
@@ -7,7 +8,15 @@ import React from 'react';
  * @return {element}
  */
 function App(props) {
-  return <div>{ props.children }</div>;
+  return (
+    <div>
+      <Helmet
+        title="Janos Gat Gallery"
+        htmlAttributes={{ lang: 'en' }}
+      />
+      { props.children }
+    </div>
+  );
 }
 
 App.propTypes = {
