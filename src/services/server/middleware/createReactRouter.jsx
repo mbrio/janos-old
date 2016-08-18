@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import reactIndexTemplate from '../../../lib/reactIndexTemplate';
+import config from '../../../../config/config';
 
 /**
  * Creates the middleware that handles rendering of the isomporphic React application.
@@ -35,7 +36,15 @@ export default function createReactRouter(routes) {
 
       // Attempt to render the initial React component
       } else if (renderProps) {
-        const reactComponent = renderToString(<RouterContext {...renderProps} />);
+        const reactComponent = renderToString(
+          <RouterContext
+            {...renderProps}
+            createElement={(Component, props) =>
+              <Component appConfig={config.c.client} {...props} />
+            }
+          />
+        );
+
         const head = Helmet.rewind();
 
         const html = reactIndexTemplate(

@@ -8,11 +8,13 @@ import Helmet from 'react-helmet';
  * @return {element}
  */
 function App(props) {
+  const { appConfig } = props;
+
   return (
     <div>
       <Helmet
-        title="Janos Gat Gallery"
-        titleTemplate="%s - Janos Gat Gallery"
+        title={appConfig.helmet.title}
+        titleTemplate={appConfig.helmet.titleTemplate}
         htmlAttributes={{ lang: 'en' }}
       />
       { props.children }
@@ -21,6 +23,7 @@ function App(props) {
 }
 
 App.propTypes = {
+  appConfig: React.PropTypes.object.isRequired,
   children: React.PropTypes.element.isRequired,
 };
 

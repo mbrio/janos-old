@@ -1,13 +1,20 @@
-if (!process.env.NODE_ENV) { process.env.NODE_ENV = 'development'; }
+require('babel-register')();
 
 const pathutil = require('path');
 const webpack = require('webpack');
+const { default: config } = require('../config');
 
-const environment = process.env.NODE_ENV;
+const environment = config.environment;
 const useHotServer = process.env.USE_HOT_SERVER || false;
 const port = process.env.PORT || 8080;
 const host = process.env.HOST || 'localhost';
-const plugins = [new webpack.EnvironmentPlugin(['NODE_ENV'])];
+const plugins = [
+  new webpack.EnvironmentPlugin(['NODE_ENV']),
+  new webpack.DefinePlugin({
+    'process.env.APP_CONFIG': JSON.stringify(config.c.client),
+  }),
+];
+
 const jsxLoader = {
   test: /\.(js|jsx)$/,
   loaders: ['babel'],
@@ -36,7 +43,7 @@ if (environment === 'development') {
 }
 
 module.exports = {
-  context: pathutil.join(__dirname, '..', '..'),
+  context: config.cwd,
   target: 'web',
   debug: environment === 'test' || environment === 'development',
   devtool: environment === 'test' || environment === 'development' ? 'source-map' : undefined,
@@ -44,8 +51,8 @@ module.exports = {
     app: appEntry,
   },
   output: {
-    path: './src/assets/',
-    filename: 'build/js/[name].js',
+    path: config.c.build.rootPath,
+    filename: pathutil.join(config.c.build.path, '/js/[name].js'),
   },
   plugins,
   resolve: {
@@ -58,7 +65,7 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: './src/assets',
+    contentBase: config.c.build.rootPath,
     hot: useHotServer,
     port,
     host,
