@@ -67,7 +67,7 @@ start();
 //     ignoreInitial: true,
 //   })
 //     .on('all', (event, path) => { // On all file events
-//       console.log('File system event has occurred', event, path); // eslint-disable-line no-console
+//       console.log('File system event has occurred', event, path);
 //       console.log('Restarting server...'); //eslint-disable-line
 //
 //       if (proc) { proc.kill(); } // If the process already exists kill it so we can restart it
