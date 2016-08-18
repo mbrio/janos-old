@@ -12,6 +12,7 @@ function App(props) {
     <div>
       <Helmet
         title="Janos Gat Gallery"
+        titleTemplate="%s - Janos Gat Gallery"
         htmlAttributes={{ lang: 'en' }}
       />
       { props.children }

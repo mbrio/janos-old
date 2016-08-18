@@ -33,7 +33,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <div>
-        <Helmet title="Home | Janos Gat Gallery" />
+        <Helmet title="Home" />
         <div>{this.state.message}</div>
         <div>{this.props.windowWidth}x{this.props.windowHeight}</div>
         <div><button onClick={this.handleClick}>Click Me</button></div>
