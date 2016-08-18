@@ -1,5 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import autobind from 'autobind-decorator';
 import WindowSizedComponent from '../containers/WindowSizedComponent';
 
 /**
@@ -19,12 +20,12 @@ export default class Home extends React.Component {
 
   /**
    * The button click event handler, it is defined as an arrow function so that it is bound to the
-   * instance of the component. Normally we would use the @autobind decorator, but webpack dev
-   * server's hot reload is broken with it.
+   * instance of the component.
    *
    * @param {Object} e - The event object passed in by the browser.
    */
-  handleClick = (e) => {
+  @autobind
+  handleClick(e) {
     e.preventDefault();
 
     this.setState({ message: Math.random() });
