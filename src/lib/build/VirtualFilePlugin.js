@@ -43,4 +43,6 @@ class VirtualFilePlugin {
   }
 }
 
+// We must use module.exports because this file is not handled by Babel when loading webpack
+// config
 module.exports = VirtualFilePlugin;

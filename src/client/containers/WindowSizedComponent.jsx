@@ -50,11 +50,13 @@ export default (ComposedComponent) => class extends React.Component {
   }
 
   render() {
+    const { windowWidth, windowHeight } = this.state;
+
     return (
       <ComposedComponent
         {...this.props}
-        windowWidth={this.state.windowWidth}
-        windowHeight={this.state.windowHeight}
+        windowWidth={windowWidth}
+        windowHeight={windowHeight}
       />
     );
   }
