@@ -60,7 +60,7 @@ export default class Server {
     return new Promise((resolve, reject) => {
       this.httpServer.listen(this.options.port, err => {
         if (err) { return reject(err); }
-        return resolve();
+        return resolve(this);
       });
     });
   }
@@ -74,7 +74,7 @@ export default class Server {
     return new Promise((resolve, reject) => {
       this.httpServer.close(err => {
         if (err) { return reject(err); }
-        return resolve();
+        return resolve(this);
       });
     });
   }
