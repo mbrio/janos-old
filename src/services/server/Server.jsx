@@ -1,6 +1,10 @@
 import httputil from 'http';
 import express from 'express';
+import chokidar from 'chokidar';
 import pathutil from 'path';
+import webpackBuild from '../../lib/build/webpackBuild';
+import environment from '../../lib/environment';
+import webpackConfig from '../../../config/build/webpack.config';
 import accessControl from './middleware/accessControl';
 import createReactRouter from './middleware/createReactRouter';
 import createApiRouter from './api';
@@ -9,6 +13,7 @@ import createApiRouter from './api';
 const defaultOptions = {
   throwUnhandledRejection: true,
   port: process.env.PORT || 8080,
+  cwd: process.cwd(),
 };
 
 /**
@@ -51,18 +56,44 @@ export default class Server {
     this.app.use(createReactRouter(routes));
   }
 
+  buildDeps() {
+    return webpackBuild(webpackConfig);
+  }
+
+  watch() {
+    // Begin watching the src directory
+    chokidar.watch(pathutil.join(this.options.cwd, 'src'), {
+      ignored: [
+        /[\/\\]\./, // Exclude dot files
+        /[\/\\]src[\/\\]assets[\/\\]build/, // Exclude our build files
+      ],
+      ignoreInitial: true,
+    })
+      .on('all', (event, path) => { // On all file events
+        if (/[\/\\]src[\/\\]assets[\/\\]client/.test(path)) {
+          // Do something
+        } else {
+          // Do something else
+        }
+      });
+  }
+
   /**
    * Start the http server.
    *
    * @return {Promise} - The promise associated with starting the http server.
    */
   start() {
-    return new Promise((resolve, reject) => {
+    return this.buildDeps().then(stats => new Promise((resolve, reject) => {
+      if (environment.isDevelopment) {
+        console.log(stats.toString()); // eslint-disable-line no-console
+      }
+
       this.httpServer.listen(this.options.port, err => {
         if (err) { return reject(err); }
         return resolve(this);
       });
-    });
+    }));
   }
 
   /**
