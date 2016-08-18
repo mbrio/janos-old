@@ -12,10 +12,12 @@ export function start() {
   if (server) { throw new Error('The server is already started.'); }
   server = new Server({ routes });
 
-  return server.start().then(() => {
+  return server.start().then(s => {
     /* eslint-disable no-console */
     console.log(`Server started in ${process.env.NODE_ENV} mode on port ${server.options.port}.`);
     /* eslint-enable no-console */
+
+    return s;
   });
 }
 
@@ -27,10 +29,12 @@ export function start() {
 export function stop() {
   if (!server) { throw new Error('The server has not started.'); }
 
-  return server.stop().then(() => {
+  return server.stop().then(s => {
     server = null;
     /* eslint-disable no-console */
     console.log('Server stopped.');
     /* eslint-enable no-console */
+
+    return s;
   });
 }
