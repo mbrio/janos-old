@@ -3,7 +3,6 @@ import express from 'express';
 import chokidar from 'chokidar';
 import pathutil from 'path';
 import webpackBuild from '../../lib/build/webpackBuild';
-import environment from '../../lib/environment';
 import webpackConfig from '../../../config/build/webpack.config';
 import accessControl from './middleware/accessControl';
 import createReactRouter from './middleware/createReactRouter';
@@ -57,12 +56,18 @@ export default class Server {
   }
 
   buildDeps() {
-    return webpackBuild(webpackConfig);
+    return webpackBuild(webpackConfig).then(stats => {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(stats.toString()); // eslint-disable-line no-console
+      }
+    });
   }
 
-  watch() {
+  startWatching() {
+    if (this.watcher) { throw new Error('Already watching for changes.'); }
+
     // Begin watching the src directory
-    chokidar.watch(pathutil.join(this.options.cwd, 'src'), {
+    this.watcher = chokidar.watch(pathutil.join(this.options.cwd, 'src'), {
       ignored: [
         /[\/\\]\./, // Exclude dot files
         /[\/\\]src[\/\\]assets[\/\\]build/, // Exclude our build files
@@ -70,12 +75,18 @@ export default class Server {
       ignoreInitial: true,
     })
       .on('all', (event, path) => { // On all file events
-        if (/[\/\\]src[\/\\]assets[\/\\]client/.test(path)) {
-          // Do something
+        if (/[\/\\]src[\/\\]client/.test(path)) {
+          this.buildDeps();
         } else {
-          // Do something else
+          process.exit();
         }
       });
+  }
+
+  stopWatching() {
+    if (!this.watcher) { return; }
+
+    this.watcher.close();
   }
 
   /**
@@ -84,11 +95,9 @@ export default class Server {
    * @return {Promise} - The promise associated with starting the http server.
    */
   start() {
-    return this.buildDeps().then(stats => new Promise((resolve, reject) => {
-      if (environment.isDevelopment) {
-        console.log(stats.toString()); // eslint-disable-line no-console
-      }
+    if (process.env.NODE_ENV === 'development') { this.startWatching(); }
 
+    return this.buildDeps().then(() => new Promise((resolve, reject) => {
       this.httpServer.listen(this.options.port, err => {
         if (err) { return reject(err); }
         return resolve(this);
@@ -102,6 +111,8 @@ export default class Server {
    * @return {Promise} - The promise associated with stoping the http server.
    */
   stop() {
+    this.stopWatching();
+
     return new Promise((resolve, reject) => {
       this.httpServer.close(err => {
         if (err) { return reject(err); }
