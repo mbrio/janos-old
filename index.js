@@ -42,31 +42,38 @@ function startServer() {
 }
 
 // When in a development environment we want to watch changes to the services file structure and
-// restart as necessary.
+// restart as necessary. In order to do this we fork this module and pass a new environment
+// variable called FORK_FORCE_START, this will allow us in development mode to kill the server
+// process and restart it.
+
+// When we are in development and we have not been forked yet
 if (process.env.NODE_ENV === 'development' && !process.env.FORK_FORCE_START) {
   const env = Object.assign({}, process.env, { FORK_FORCE_START: true });
   let proc = null;
 
   console.log('Begin watching file changes'); // eslint-disable-line no-console
 
+  // Begin watching the src directory
   chokidar.watch(pathutil.join(__dirname, 'src'), {
     ignored: [
-      /[\/\\]\./,
-      /[\/\\]src[\/\\]assets[\/\\]build[\/\\]/,
+      /[\/\\]\./, // Exclude dot files
+      /[\/\\]src[\/\\]assets[\/\\]build[\/\\]/, // Exclude our build files
     ],
     ignoreInitial: true,
   })
-    .on('all', (event, path) => {
+    .on('all', (event, path) => { // On all file events
       console.log('File system event has occurred', event, path); // eslint-disable-line no-console
       console.log('Restarting server...'); //eslint-disable-line
 
-      if (proc) { proc.kill(); }
-      proc = forkServer(env);
+      if (proc) { proc.kill(); } // If the process already exists kill it so we can restart it
+      proc = forkServer(env); // Fork the new server
     });
 
-  proc = forkServer(env);
+  proc = forkServer(env); // Fork the initial server
 } else {
+  // A series of promise factories that need to be executed in order to start the server
   const promises = [buildDeps, startServer];
 
+  // Execute the startup scripts in series
   pseries(promises);
 }
