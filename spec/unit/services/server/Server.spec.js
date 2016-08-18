@@ -5,14 +5,17 @@ describe('Server', () => {
   it('should start and stop', done => {
     const server = new Server();
 
-    server.start().then(s => {
-      expect(s).to.equal(server);
-      expect(server.httpServer.listening).to.equal(true);
-      server.stop().then(s => {
+    server.start()
+      .then(s => {
         expect(s).to.equal(server);
-        expect(server.httpServer.listening).to.equal(false);
-        done();
+        expect(server.httpServer.listening).to.equal(true);
+      })
+      .then(() => {
+        server.stop().then(s => {
+          expect(s).to.equal(server);
+          expect(server.httpServer.listening).to.equal(false);
+          done();
+        });
       });
-    });
   });
 });
