@@ -6,5 +6,4 @@ console.log(`Initializing in ${process.env.NODE_ENV} mode.`);
 /* eslint-enable no-console */
 
 // Render our routes into the react-view HTML element.
-const root = document.getElementById('react-view');
-render(routes, root);
+render(routes, document.getElementById('react-view'));
