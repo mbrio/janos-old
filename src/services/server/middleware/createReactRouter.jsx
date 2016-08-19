@@ -3,7 +3,6 @@ import Helmet from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import reactIndexTemplate from '../../../lib/reactIndexTemplate';
-import config from '../../../../config/config';
 
 /**
  * Creates the middleware that handles rendering of the isomporphic React application.
@@ -11,7 +10,7 @@ import config from '../../../../config/config';
  * @param {element} routes - The React element that defines the routes of the application.
  * @return {function} - The generated express middleware
  */
-export default function createReactRouter(routes) {
+export default function createReactRouter(routes, config) {
   /**
    * Renders the isomporphic React application.
    *
@@ -40,7 +39,7 @@ export default function createReactRouter(routes) {
           <RouterContext
             {...renderProps}
             createElement={(Component, props) =>
-              <Component appConfig={config.c.client} {...props} />
+              <Component appConfig={config.root.client} {...props} />
             }
           />
         );

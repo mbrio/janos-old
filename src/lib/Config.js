@@ -1,4 +1,5 @@
 import pathutil from 'path';
+import i from 'seamless-immutable';
 
 const defaultOptions = {
   cwd: process.cwd(),
@@ -10,10 +11,21 @@ const defaultOptions = {
  */
 export default class Config {
   constructor(config = {}, options = {}) {
-    this.options = Object.assign({}, defaultOptions, options);
-    this.raw = config;
-    this.environmentOverrides = config[`__${this.environment}`] || {};
-    this.c = Object.assign({}, this.raw, this.environmentOverrides);
+    // Apply supplied options to default and store an immutable copy.
+    const o = i(Object.assign({}, defaultOptions, options));
+    Object.defineProperty(this, 'options', { get: () => o });
+
+    // Store an immutable copy of the raw config
+    const raw = i(Object.assign({}, config));
+    Object.defineProperty(this, 'raw', { get: () => raw });
+
+    // Store an immutable copy of the raw environment override
+    const environmentOverrides = i(Object.assign({}, config[`__${this.environment}`] || {}));
+    Object.defineProperty(this, 'environmentOverrides', { get: () => environmentOverrides });
+
+    // Apply the environment override to the raw config
+    const root = i(Object.assign({}, raw, environmentOverrides));
+    Object.defineProperty(this, 'root', { get: () => root });
   }
 
   /**

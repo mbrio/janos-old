@@ -2,7 +2,7 @@ require('babel-register')();
 
 const pathutil = require('path');
 const webpack = require('webpack');
-const { default: config } = require('../config');
+const { default: config } = require('../');
 
 const environment = config.environment;
 const useHotServer = process.env.USE_HOT_SERVER || false;
@@ -11,7 +11,7 @@ const host = process.env.HOST || 'localhost';
 const plugins = [
   new webpack.EnvironmentPlugin(['NODE_ENV']),
   new webpack.DefinePlugin({
-    'process.env.APP_CONFIG': JSON.stringify(config.c.client),
+    'process.env.APP_CONFIG': JSON.stringify(config.root.client),
   }),
 ];
 
@@ -51,8 +51,8 @@ module.exports = {
     app: appEntry,
   },
   output: {
-    path: config.c.build.rootPath,
-    filename: pathutil.join(config.c.build.path, '/js/[name].js'),
+    path: config.root.build.rootPath,
+    filename: pathutil.join(config.root.build.path, '/js/[name].js'),
   },
   plugins,
   resolve: {
@@ -65,7 +65,7 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: config.c.build.rootPath,
+    contentBase: config.root.build.rootPath,
     hot: useHotServer,
     port,
     host,

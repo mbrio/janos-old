@@ -1,8 +1,11 @@
 require('babel-register')();
-const Server = require('./Server');
+const { default: Server } = require('./Server');
 const routes = require('../../client/routes');
+const config = require('../../../config');
 
-const server = new Server({ routes });
+const server = new Server({ routes, config });
+
+console.log('Server starting...'); // eslint-disable-line no-console
 
 server.start().then(() => {
   /* eslint-disable no-console */

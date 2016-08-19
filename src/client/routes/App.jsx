@@ -8,7 +8,13 @@ import Helmet from 'react-helmet';
  * @return {element}
  */
 function App(props) {
-  const { appConfig } = props;
+  // const { appConfig } = props;
+  const appConfig = {
+    helmet: {
+      title: 'Janos Gat Gallery',
+      titleTemplate: '%s | Janos Gat Gallery',
+    },
+  };
 
   return (
     <div>
@@ -23,7 +29,7 @@ function App(props) {
 }
 
 App.propTypes = {
-  appConfig: React.PropTypes.object.isRequired,
+  // appConfig: React.PropTypes.object.isRequired,
   children: React.PropTypes.element.isRequired,
 };
 
