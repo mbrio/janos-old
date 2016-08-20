@@ -32,6 +32,7 @@ export default class Server {
     this.options = Object.assign({}, defaultOptions, options);
     const { routes, throwUnhandledRejection, config } = this.options;
 
+    // Check to see if our options meet application requirements
     if (!config) { throw new Error('No config supplied in options.'); }
     if (!routes) { throw new Error('No routes supplied in options.'); }
 
@@ -51,7 +52,7 @@ export default class Server {
     // Setup static serving of files within the assets folder.
     this.app.use(express.static(pathutil.join(__dirname, '..', '..', 'assets')));
 
-    // // Setup access control headers
+    // Setup access control headers
     this.app.use(accessControl);
 
     // Setup the API that servers our application code

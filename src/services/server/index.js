@@ -1,7 +1,7 @@
 require('babel-register')();
 const { default: Server } = require('./Server');
-const routes = require('../../client/routes');
-const config = require('../../../config');
+const { default: routes } = require('../../client/routes');
+const { default: config } = require('../../../config');
 
 const server = new Server({ routes, config });
 
