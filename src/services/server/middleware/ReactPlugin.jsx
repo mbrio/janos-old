@@ -2,6 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
+import ServerPlugin from './ServerPlugin';
 import reactIndexTemplate from '../../../lib/reactIndexTemplate';
 
 /**
@@ -10,7 +11,7 @@ import reactIndexTemplate from '../../../lib/reactIndexTemplate';
  * @param {element} routes - The React element that defines the routes of the application.
  * @return {function} - The generated express middleware
  */
-export default function createReactRouter(routes, config) {
+function createReactRouter(routes, config) {
   /**
    * Renders the isomporphic React application.
    *
@@ -62,4 +63,13 @@ export default function createReactRouter(routes, config) {
       }
     });
   };
+}
+
+export default class ReactPlugin extends ServerPlugin {
+  constructor(server) {
+    super(server);
+
+    // Setup the global handler for handling isomporphic rendering of React components
+    this.server.app.use(createReactRouter(this.server.routes, this.server.config));
+  }
 }

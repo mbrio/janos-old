@@ -1,4 +1,5 @@
 import chokidar from 'chokidar';
+import ServerPlugin from './ServerPlugin';
 
 /**
  * A Server plugin that sets up the development environment. It starts watching source files for
@@ -6,15 +7,13 @@ import chokidar from 'chokidar';
  * immediately reflected in the running server. It begins a socket.io server that is used to tell
  * the browser to refresh when updates are made.
  */
-export default class Development {
+export default class DevelopmentPlugin extends ServerPlugin {
   /**
    * Starts watching files for changes, shuts down the process if a change occurs.
-   *
-   * @param {Server} server = The server that is has ownership over the plugin.
    */
-  startWatching(server) {
+  startWatching() {
     if (this.watcher) { throw new Error('Already watching for changes.'); }
-    const watchPath = server.config.path('src');
+    const watchPath = this.server.config.path('src');
 
     // Begin watching the src directory
     this.watcher = chokidar.watch(watchPath, {
@@ -24,16 +23,11 @@ export default class Development {
         /[\/\\]src[\/\\]assets[\/\\]build/, // Exclude our build files
       ],
       ignoreInitial: true,
-    })
-      .on('all', () => { // On all file events
-        process.exit();
-      });
+    }).on('all', () => process.exit());
   }
 
   /**
    * Stops watching files for changes.
-   *
-   * @param {Server} server = The server that is has ownership over the plugin.
    */
   stopWatching() {
     if (!this.watcher) { return; }
@@ -43,19 +37,15 @@ export default class Development {
 
   /**
    * Starts all development processes.
-   *
-   * @param {Server} server = The server that is has ownership over the plugin.
    */
-  start(server) {
-    if (server.config.isDevelopment) { this.startWatching(server); }
+  start() {
+    if (this.server.config.isDevelopment) { this.startWatching(); }
   }
 
   /**
    * Stops all development processese.
-   *
-   * @param {Server} server = The server that is has ownership over the plugin.
    */
-  stop(server) {
-    this.stopWatching(server);
+  stop() {
+    this.stopWatching();
   }
 }

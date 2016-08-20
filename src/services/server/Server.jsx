@@ -1,11 +1,5 @@
 import httputil from 'http';
 import express from 'express';
-import pathutil from 'path';
-import webpackBuild from '../../lib/build/webpackBuild';
-import webpackConfig from '../../../config/build/webpack.config';
-import accessControl from './middleware/accessControl';
-import createReactRouter from './middleware/createReactRouter';
-import createApiRouter from './api';
 import pseries from '../../lib/pseries';
 
 // Default options for the Server class
@@ -38,7 +32,7 @@ export default class Server {
     if (!routes) { throw new Error('No routes supplied in options.'); }
 
     this.config = config;
-    this.plugins = plugins || [];
+    this.routes = routes;
 
     // Stops Promises from swalling exceptions caused by reject that were not handled.
     if (throwUnhandledRejection) {
@@ -51,25 +45,8 @@ export default class Server {
     this.httpServer = httputil.Server(this.app);
     /* eslint-enable new-cap */
 
-    // Setup static serving of files within the assets folder.
-    this.app.use(express.static(pathutil.join(__dirname, '..', '..', 'assets')));
-
-    // Setup access control headers
-    this.app.use(accessControl);
-
-    // Setup the API that servers our application code
-    this.app.use(createApiRouter('/api'));
-
-    // Setup the global handler for handling isomporphic rendering of React components
-    this.app.use(createReactRouter(routes, config));
-  }
-
-  buildDeps() {
-    return webpackBuild(webpackConfig).then(stats => {
-      if (process.env.NODE_ENV === 'development') {
-        console.log(stats.toString()); // eslint-disable-line no-console
-      }
-    });
+    // Instantiate our plugins
+    this.plugins = (plugins || []).map(Plugin => new Plugin(this));
   }
 
   /**
@@ -79,9 +56,8 @@ export default class Server {
    */
   start() {
     const plugins = [
-      ...this.plugins.map(p => () => p.start(this)),
-      () => this.buildDeps(),
-      () => new Promise((resolve, reject) => {
+      ...this.plugins.map(p => () => p.start(this)), // Start all plugins
+      () => new Promise((resolve, reject) => { // Start the web server
         this.httpServer.listen(this.options.port, err => {
           if (err) { return reject(err); }
           return resolve(this);
@@ -99,8 +75,8 @@ export default class Server {
    */
   stop() {
     const plugins = [
-      ...this.plugins.map(p => () => p.stop(this)),
-      new Promise((resolve, reject) => {
+      ...this.plugins.map(p => () => p.stop(this)), // Stop all plugins
+      new Promise((resolve, reject) => { // Stop the web server
         this.httpServer.close(err => {
           if (err) { return reject(err); }
           return resolve(this);
