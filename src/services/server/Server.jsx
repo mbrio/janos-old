@@ -1,18 +1,19 @@
 import httputil from 'http';
 import express from 'express';
-import chokidar from 'chokidar';
 import pathutil from 'path';
 import webpackBuild from '../../lib/build/webpackBuild';
 import webpackConfig from '../../../config/build/webpack.config';
 import accessControl from './middleware/accessControl';
 import createReactRouter from './middleware/createReactRouter';
 import createApiRouter from './api';
+import pseries from '../../lib/pseries';
 
 // Default options for the Server class
 const defaultOptions = {
   throwUnhandledRejection: true,
   port: process.env.PORT || 8080,
   cwd: process.cwd(),
+  plugins: [],
 };
 
 /**
@@ -26,17 +27,18 @@ export default class Server {
    * @param {boolean} options[].throwUnhandledRejection - Rethrow unhandled Promise rejections.
    * @param {number} options[].port - The port to start the server on.
    * @param {element} options[].routes - The React element describing the routes.
- * * @param {Config} options[].config - The Config instance for the server.
+   * @param {Config} options[].config - The Config instance for the server.
    */
   constructor(options = {}) {
     this.options = Object.assign({}, defaultOptions, options);
-    const { routes, throwUnhandledRejection, config } = this.options;
+    const { routes, throwUnhandledRejection, config, plugins } = this.options;
 
     // Check to see if our options meet application requirements
     if (!config) { throw new Error('No config supplied in options.'); }
     if (!routes) { throw new Error('No routes supplied in options.'); }
 
     this.config = config;
+    this.plugins = plugins || [];
 
     // Stops Promises from swalling exceptions caused by reject that were not handled.
     if (throwUnhandledRejection) {
@@ -70,43 +72,24 @@ export default class Server {
     });
   }
 
-  startWatching() {
-    if (this.watcher) { throw new Error('Already watching for changes.'); }
-
-    // Begin watching the src directory
-    this.watcher = chokidar.watch(pathutil.join(this.options.cwd, 'src'), {
-      ignored: [
-        /[\/\\]\./, // Exclude dot files
-        // TODO: Build this from config data
-        /[\/\\]src[\/\\]assets[\/\\]build/, // Exclude our build files
-      ],
-      ignoreInitial: true,
-    })
-      .on('all', () => { // On all file events
-        process.exit();
-      });
-  }
-
-  stopWatching() {
-    if (!this.watcher) { return; }
-
-    this.watcher.close();
-  }
-
   /**
    * Start the http server.
    *
    * @return {Promise} - The promise associated with starting the http server.
    */
   start() {
-    if (process.env.NODE_ENV === 'development') { this.startWatching(); }
+    const plugins = [
+      ...this.plugins.map(p => () => p.start(this)),
+      () => this.buildDeps(),
+      () => new Promise((resolve, reject) => {
+        this.httpServer.listen(this.options.port, err => {
+          if (err) { return reject(err); }
+          return resolve(this);
+        });
+      }),
+    ];
 
-    return this.buildDeps().then(() => new Promise((resolve, reject) => {
-      this.httpServer.listen(this.options.port, err => {
-        if (err) { return reject(err); }
-        return resolve(this);
-      });
-    }));
+    return pseries(plugins);
   }
 
   /**
@@ -115,13 +98,16 @@ export default class Server {
    * @return {Promise} - The promise associated with stoping the http server.
    */
   stop() {
-    this.stopWatching();
+    const plugins = [
+      ...this.plugins.map(p => () => p.stop(this)),
+      new Promise((resolve, reject) => {
+        this.httpServer.close(err => {
+          if (err) { return reject(err); }
+          return resolve(this);
+        });
+      }),
+    ];
 
-    return new Promise((resolve, reject) => {
-      this.httpServer.close(err => {
-        if (err) { return reject(err); }
-        return resolve(this);
-      });
-    });
+    return pseries(plugins);
   }
 }

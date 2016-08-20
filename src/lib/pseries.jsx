@@ -12,7 +12,13 @@ export default function pseries(promiseFns) {
   const [first, ...rest] = promiseFns;
 
   if (rest && rest.length > 0) {
-    return rest.reduce((pacc, fn) => pacc.then(fn), first());
+    return rest.reduce(
+      (pacc, next) => {
+        const pm = pacc && pacc.then ? pacc : Promise.resolve();
+        return pm.then(next);
+      },
+      first()
+    );
   }
 
   return first();

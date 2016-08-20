@@ -2,8 +2,13 @@ require('babel-register')();
 const { default: Server } = require('./Server');
 const { default: routes } = require('../../client/routes');
 const { default: config } = require('../../../config');
+const { default: Development } = require('./middleware/Development.jsx'); // eslint-disable-line
 
-const server = new Server({ routes, config });
+const plugins = [
+  new Development(),
+];
+
+const server = new Server({ routes, config, plugins });
 
 console.log('Server starting...'); // eslint-disable-line no-console
 
