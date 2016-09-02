@@ -6,5 +6,6 @@
     afterEach: true,
     before: true,
     after: true,
+    expect: true,
   },
 }

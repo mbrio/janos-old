@@ -76,7 +76,7 @@ export default class Server {
   stop() {
     const plugins = [
       ...this.plugins.map(p => () => p.stop(this)), // Stop all plugins
-      new Promise((resolve, reject) => { // Stop the web server
+      () => new Promise((resolve, reject) => { // Stop the web server
         this.httpServer.close(err => {
           if (err) { return reject(err); }
           return resolve(this);
