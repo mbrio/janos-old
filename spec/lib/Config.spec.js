@@ -1,4 +1,4 @@
-import Config from '../../../src/lib/Config';
+import Config from '../../src/lib/Config';
 
 const defaultEnv = process.env.NODE_ENV || 'development';
 

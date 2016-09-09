@@ -43,6 +43,7 @@
   "devDependencies": {
     "babel-eslint": "^6.1.2",
     "babel-jest": "^15.0.0",
+    "enzyme": "^2.4.1",
     "eslint": "^3.3.1",
     "eslint-config-airbnb": "^10.0.1",
     "eslint-config-mbrio": "^1.0.3",
@@ -95,6 +96,6 @@
       "jsx",
       "json"
     ],
-    "testRegex": "(/spec/unit/.*|\\.(spec))\\.(js)$"
+    "testRegex": "(/spec/.*|\\.(spec))\\.(js)$"
   }
 }

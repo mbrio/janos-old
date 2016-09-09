@@ -1,6 +1,6 @@
-import Server from '../../../../src/services/server/Server';
-import config from '../../../../config';
-import routes from '../../../../src/client/routes';
+import Server from '../../../src/services/server/Server';
+import config from '../../../config';
+import routes from '../../../src/client/routes';
 
 describe('Server', () => {
   it('should start and stop', done => {
