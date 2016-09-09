@@ -7,8 +7,7 @@ import WindowSizedComponent from '../containers/WindowSizedComponent';
  * The home route, is composed with WindowSizedComponent so that it understands when the window is
  * resized.
  */
-@WindowSizedComponent
-export default class Home extends React.Component {
+export class Home extends React.Component {
   static propTypes = {
     windowWidth: React.PropTypes.number.isRequired,
     windowHeight: React.PropTypes.number.isRequired,
@@ -35,9 +34,11 @@ export default class Home extends React.Component {
     return (
       <div>
         <Helmet title="Home" />
-        <div>{this.state.message}</div>
+        <div className="label">{this.state.message}</div>
         <div><button onClick={this.handleClick}>Click Me</button></div>
       </div>
     );
   }
 }
+
+export default WindowSizedComponent(Home);

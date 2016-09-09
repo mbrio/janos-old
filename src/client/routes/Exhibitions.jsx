@@ -2,8 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import WindowSizedComponent from '../containers/WindowSizedComponent';
 
-@WindowSizedComponent
-class Exhibitions extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class Exhibitions extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (<div>
       <Helmet title="Exhibitions" />
@@ -12,4 +11,4 @@ class Exhibitions extends React.Component { // eslint-disable-line react/prefer-
   }
 }
 
-export default Exhibitions;
+export default WindowSizedComponent(Exhibitions);

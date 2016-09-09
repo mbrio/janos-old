@@ -1,0 +1,14 @@
+exports[`Home UI renders with expected output 1`] = `
+<div>
+  <div
+    className="label">
+    Hello, App!
+  </div>
+  <div>
+    <button
+      onClick={[Function bound handleClick]}>
+      Click Me
+    </button>
+  </div>
+</div>
+`;
